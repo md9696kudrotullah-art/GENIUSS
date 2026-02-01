@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জিনিয়াস কোচিং সেন্টার - রেজাল্ট</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        h2 { color: #1a73e8; margin-bottom: 5px; }
+        .sub-title { color: #5f6368; margin-bottom: 25px; font-size: 14px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #dfe1e5; border-radius: 8px; box-sizing: border-box; font-size: 16px; outline: none; }
+        input:focus { border-color: #1a73e8; }
+        button { width: 100%; padding: 12px; background-color: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
+        button:hover { background-color: #1557b0; }
+        
+        #resultArea { margin-top: 20px; text-align: left; padding: 15px; border-radius: 10px; display: none; border: 1px solid #ddd; }
+        .pass { background-color: #e6fffa; border-color: #38b2ac; color: #234e52; }
+        .fail { background-color: #fff5f5; border-color: #feb2b2; color: #742a2a; }
+        .message { font-weight: bold; margin-top: 10px; display: block; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>জিনিয়াস কোচিং সেন্টার</h2>
+    <div class="sub-title">অনলাইন রেজাল্ট পোর্টাল</div>
+    
+    <input type="text" id="rollInput" placeholder="রোল নম্বর লিখুন (উদা: 154426)">
+    <button onclick="searchResult()">ফলাফল দেখুন</button>
+
+    <div id="resultArea"></div>
+</div>
+
+<script>
+    // ইমেজ থেকে সংগৃহীত ডাটা
+    const studentData = {
+        "154428": { mcq: 5, cq: 3 },
+        "154426": { mcq: 16, cq: 16 },
+        "154422": { mcq: 6, cq: 13.5 },
+        "154427": { mcq: 6, cq: 6.5 },
+        "154423": { mcq: 8, cq: 7.5 },
+        "154424": { mcq: 5, cq: 5.5 },
+        "154421": { mcq: 9, cq: 5.5 },
+        "154420": { mcq: 14, cq: 7 },
+        "154425": { mcq: 10, cq: 6 }
+    };
+
+    function searchResult() {
+        const roll = document.getElementById('rollInput').value.trim();
+        const resultArea = document.getElementById('resultArea');
+        const passMark = 25;
+        
+        if (studentData[roll]) {
+            const data = studentData[roll];
+            const total = data.mcq + data.cq;
+            resultArea.style.display = "block";
+            
+            let message = "";
+            let statusClass = "";
+
+            if (total >= passMark) {
+                statusClass = "pass";
+                message = "অভিনন্দন! তুমি পরীক্ষায় পাস করেছ। তোমার সাফল্যের এই ধারা অব্যাহত থাকুক। 🎉";
+            } else {
+                statusClass = "fail";
+                message = "দুঃখিত, তুমি পাস করতে পারোনি। মন খারাপ না করে পড়াশোনায় আরও মনোযোগী হও, পরের বার নিশ্চয়ই ভালো করবে। 💪";
+            }
+
+            resultArea.className = statusClass;
+            resultArea.innerHTML = `
+                <strong>রোল: ${roll}</strong><br>
+                MCQ: ${data.mcq} | CQ: ${data.cq}<br>
+                <strong>মোট নম্বর: ${total}</strong><br>
+                <span class="message">${message}</span>
+            `;
+        } else {
+            resultArea.style.display = "block";
+            resultArea.className = "";
+            resultArea.style.backgroundColor = "#fff";
+            resultArea.style.color = "red";
+            resultArea.innerHTML = "❌ এই রোলের কোনো তথ্য পাওয়া যায়নি!";
+        }
+    }
+</script>
+
+</body>
+</html>
